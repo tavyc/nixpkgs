@@ -17,8 +17,8 @@ let
 
   cfgUpdate = pkgs.writeText "octoprint-config.yaml" (builtins.toJSON fullConfig);
 
-  pluginsEnv = pkgs.python.buildEnv.override {
-    extraLibs = cfg.plugins pkgs.octoprint-plugins;
+  pythonEnv = pkgs.python.buildEnv.override {
+    extraLibs = [ pkgs.octoprint ] ++ cfg.plugins pkgs.octoprint-plugins;
   };
 
 in
@@ -101,8 +101,7 @@ in
       description = "OctoPrint, web interface for 3D printers";
       wantedBy = [ "multi-user.target" ];
       after = [ "network.target" ];
-      path = [ pluginsEnv ];
-      environment.PYTHONPATH = makeSearchPathOutput "lib" pkgs.python.sitePackages [ pluginsEnv ];
+      path = [ pythonEnv ];
 
       preStart = ''
         mkdir -p "${cfg.stateDir}"
@@ -117,7 +116,7 @@ in
       '';
 
       serviceConfig = {
-        ExecStart = "${pkgs.octoprint}/bin/octoprint -b ${cfg.stateDir}";
+        ExecStart = "${pythonEnv}/bin/octoprint -b ${cfg.stateDir}";
         User = cfg.user;
         Group = cfg.group;
         PermissionsStartOnly = true;
