@@ -11460,6 +11460,8 @@ in
 
     fusionio-vsl = callPackage ../os-specific/linux/fusionio/vsl.nix { };
 
+    ipt_netflow = callPackage ../os-specific/linux/ipt-netflow { };
+
     lttng-modules = callPackage ../os-specific/linux/lttng-modules { };
 
     broadcom_sta = callPackage ../os-specific/linux/broadcom-sta/default.nix { };
