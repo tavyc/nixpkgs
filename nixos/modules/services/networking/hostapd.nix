@@ -155,8 +155,11 @@ in
       { assertion = (cfg.hwMode == "a" || cfg.hwMode == "b" || cfg.hwMode == "g");
         message = "hwMode must be a/b/g";
       }
-      { assertion = (cfg.channel >= 1 && cfg.channel <= 13);
-        message = "channel must be between 1 and 13";
+      { assertion = (cfg.hwMode == "b" || cfg.hwMode == "g") -> (cfg.channel >= 1 && cfg.channel <= 14);
+        message = "802.11b/g channel must be between 1 and 14";
+      }
+      { assertion = cfg.hwMode == "a" -> (cfg.channel >= 36 && cfg.channel <= 165);
+        message = "802.11a channel must be between 36 and 165";
       }];
 
     environment.systemPackages =  [ pkgs.hostapd ];
