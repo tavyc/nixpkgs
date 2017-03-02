@@ -129,6 +129,7 @@ in
       description = "Quagga daemon user";
       isSystemUser = true;
       group = "quagga";
+      extraGroups = [ "quaggavty" ];
     };
 
     users.groups = {
